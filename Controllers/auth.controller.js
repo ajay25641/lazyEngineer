@@ -116,6 +116,8 @@ const signUp = async (req, res) => {
             token: token,
             userId: response._id,
           });
+          console.log(token);
+
           tokenDetail.save().then((response) => {
             res.send({
               message: "success",
