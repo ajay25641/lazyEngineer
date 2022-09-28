@@ -46,7 +46,7 @@ const signIn = (req, res) => {
                     .then((response) => {
                       res.send({
                         message: "User logged in successfully",
-                        data: response,
+                        data: response.token,
                       });
                     })
                     .catch((err) => console.log(err));
@@ -65,7 +65,7 @@ const signUp = async (req, res) => {
   userModel.findOne({email:req.body.email},(err,data)=>{
     if(err) res.send({message:"Try again",data:null});
     else if(data) res.send({message:"Email id already exist",data:null});
-  })
+  });
   const userDetail = new userModel({
     fullName: fullName,
     email: email,
