@@ -59,7 +59,7 @@ const signIn = (req, res) => {
         );
         if (isValidPassword) {
           const payload = {
-            _id: response._id,
+            _id: data._id,
           };
           JWTService.generateToken(payload).then((token) => {
             if (token === null)
