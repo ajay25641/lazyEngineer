@@ -67,7 +67,8 @@ const signUp = async (req, res) => {
      res.send({
       message:"Email id already exist",
       data:null
-     })
+     });
+     return;
   }
   const userDetail = new userModel({
     fullName: fullName,
