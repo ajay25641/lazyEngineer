@@ -104,8 +104,12 @@ const signUp = async (req, res) => {
 
 const signOut = (req,res)=>{
   const token=req.body.token;
-  if(token===null) res.send({message:"please enter token"});
+  if(token===null){
+     res.send({message:"please enter token"});
+     return;
+  }
   tokenModel.deleteOne({token:token}).then((response)=>{
+    console.log(response);
     if(response===null) res.send({message:"please register or signIn first"});
     else res.send({message:"User logged out successfully"});
   }).catch((err)=>console.log(err));
