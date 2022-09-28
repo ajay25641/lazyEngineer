@@ -130,7 +130,7 @@ exports.signUp = async (req, res) => {
 
 exports.signOut = (req, res) => {
   const { token } = req.body;
-  //console.log(req.body);
+   
   console.log(token);
   if (token === null || token === undefined) {
     res.send({ status: "400", message: "please provide token" });
