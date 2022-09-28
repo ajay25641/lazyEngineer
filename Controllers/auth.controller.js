@@ -2,21 +2,20 @@ const userModel = require("../Models/user");
 const JWTService = require("../CommonLib/JWTtoken");
 const encryptDecrypt = require("../CommonLib/encryption-decryption");
 const tokenModel = require("../Models/token");
-const { response } = require("../main.route");
-const { JsonWebTokenError } = require("jsonwebtoken");
-
 
 exports.signIn = (req, res) => {
   userModel.findOne({ email: req.body.email }, (err, data) => {
     console.log(err);
     if (err) {
       res.send({
+        status: "400",
         error: err,
         data: null,
       });
     } else {
       if (data === null) {
         res.send({
+          status: "400",
           message: "Email id does not exist",
           data: null,
         });
@@ -29,34 +28,48 @@ exports.signIn = (req, res) => {
           const payload = {
             _id: data._id,
           };
-          JWTService.generateToken(payload).then((token) => {
-            if (token === null)
-              res.send({
-                message: "Tokenisation failed, please try again",
-                data: null,
-              });
-            else {
-              tokenModel
-                .deleteOne({ userId: data._id })
-                .then(() => {
-                  const tokenDetail = new tokenModel({
-                    token: token,
-                    userId: data._id,
-                  });
-                  tokenDetail
-                    .save()
-                    .then((response) => {
-                      res.send({
-                        message: "User logged in successfully",
-                        data: response.token,
-                      });
-                    })
-                    .catch((err) => console.log(err));
-                })
-                .catch((err) => console.log(err));
-            }
-          }).catch((err)=>console.log(err));
-        } else res.send({ message: "password is incorrect", data: null });
+          JWTService.generateToken(payload)
+            .then((token) => {
+              if (token === null)
+                res.send({
+                  status: "400",
+                  message: "Tokenisation failed, please try again",
+                  data: null,
+                });
+              else {
+                tokenModel
+                  .deleteOne({ userId: data._id })
+                  .then(() => {
+                    const tokenDetail = new tokenModel({
+                      token: token,
+                      userId: data._id,
+                    });
+                    tokenDetail
+                      .save()
+                      .then((response) => {
+                        res.send({
+                          status: "200",
+                          message: "User logged in successfully",
+                          data: {
+                            fullName: response.fullName,
+                            email: response.email,
+                            univercity: response.univercity,
+                            token: response.token,
+                          },
+                        });
+                      })
+                      .catch((err) => console.log(err));
+                  })
+                  .catch((err) => console.log(err));
+              }
+            })
+            .catch((err) => console.log(err));
+        } else
+          res.send({
+            status: "400",
+            message: "password is incorrect",
+            data: null,
+          });
       }
     }
   });
@@ -64,9 +77,14 @@ exports.signIn = (req, res) => {
 
 exports.signUp = async (req, res) => {
   const { fullName, email, password } = req.body;
-  userModel.findOne({email:req.body.email},(err,data)=>{
-    if(err) res.send({message:"Try again",data:null});
-    else if(data) res.send({message:"Email id already exist",data:data});
+  userModel.findOne({ email: req.body.email }, (err, data) => {
+    if (err) res.send({ status: "400", message: "Try again", data: null });
+    else if (data)
+      res.send({
+        status: "400",
+        message: "Email id already exist",
+        data: null,
+      });
     return;
   });
   const userDetail = new userModel({
@@ -92,8 +110,14 @@ exports.signUp = async (req, res) => {
 
           tokenDetail.save().then((response) => {
             res.send({
-              message: "success",
-              data: response.token,
+              status: "200",
+              message: "user registered successfully",
+              data: {
+                fullName: response.fullName,
+                email: response.email,
+                univercity: response.univercity,
+                token: response.token,
+              },
             });
           });
         })
@@ -104,22 +128,21 @@ exports.signUp = async (req, res) => {
     });
 };
 
-exports.signOut = (req,res)=>{
-  const {token} = req.body;
+exports.signOut = (req, res) => {
+  const { token } = req.body;
   //console.log(req.body);
   console.log(token);
-  if(token===null||token===undefined){
-     res.send({message:"please provide token"});
-     return;
+  if (token === null || token === undefined) {
+    res.send({ status: "400", message: "please provide token" });
+    return;
   }
-  tokenModel.deleteOne({token:token}).then((response)=>{
-    //console.log(response);
-    if(response.deletedCount==0) res.send({message:"please register or signIn first"});
-    else res.send({message:"User logged out successfully"});
-  }).catch((err)=>console.log(err));
-}
-
-
-
-
-
+  tokenModel
+    .deleteOne({ token: token })
+    .then((response) => {
+      //console.log(response);
+      if (response.deletedCount == 0)
+        res.send({ status: "400", message: "please register or signIn first" });
+      else res.send({ status: "200", message: "User logged out successfully" });
+    })
+    .catch((err) => console.log(err));
+};
