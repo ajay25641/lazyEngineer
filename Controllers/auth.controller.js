@@ -109,6 +109,7 @@ exports.signUp = async (req, res) => {
           console.log("Hi");
 
           tokenDetail.save().then((response) => {
+            console.log(response);
             res.send({
               status: "200",
               message: "user registered successfully",
