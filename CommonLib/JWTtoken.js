@@ -22,7 +22,10 @@ module.exports = {
 */
 exports.generateToken= (payload) => {
     jwt.sign(payload,SECRET_KEY,{expiresIn:"365 days"},(err,token)=>{
-        if(err) return null;
+        if(err){
+            console.log(err);
+            
+        }
         else return token; 
     });
     
