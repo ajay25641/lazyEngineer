@@ -108,7 +108,7 @@ const signOut = (req,res)=>{
   tokenModel.deleteOne({token:token}).then((response)=>{
     if(response===null) res.send({message:"please register or signIn first"});
     else res.send({message:"User logged out successfully"});
-  })
+  }).catch((err)=>console.log(err));
 }
 
 /*
