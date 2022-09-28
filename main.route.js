@@ -12,7 +12,7 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/',(req,res)=>{
-    res.send('welcome');
+    res.send('welcome to new site');
 });
 
 app.use(PATH.ALERT, alertRoute);
