@@ -4,7 +4,7 @@ const apps = require("./main.route");
 const dotenv = require("dotenv");
 dotenv.config();
 
-const PORT = process.env.PORT || 9110;
+const PORT = process.env.PORT || 3000;
 const host = "0.0.0.0";
 
 //const dbUrl=process.env.MONGO_URL;
