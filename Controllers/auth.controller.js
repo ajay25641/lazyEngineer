@@ -71,12 +71,18 @@ async function signIn(req, res, next) {
     "_id":response._id,
    }
    JWTService.generateToken(payload).then((token)=>{
-    res.send(
-      {
-        "message":"success",
-        "response":response,
-        "token":token
-      });
+     const tokenDetail=new tokenModel({
+      token:token,
+      userId:response._id,
+     });
+     tokenDetail.save().then((response)=>{
+      res.send(
+        {
+          "message":"success",
+          "response":response,
+          
+        });
+     })
    }).catch(err=>console.log(err));
   
     
