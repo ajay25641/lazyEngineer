@@ -38,27 +38,61 @@ async function signIn(req, res, next) {
   }
 }
 */
-const signIn = (req,res)=>{
-    userModel.findOne({email:req.body.email},(err,data)=>{
-      console.log(err);
-      if(err){
+const signIn = (req, res) => {
+  userModel.findOne({ email: req.body.email }, (err, data) => {
+    console.log(err);
+    if (err) {
+      res.send({
+        error: err,
+        data: null,
+      });
+    } else {
+      if (data === null) {
         res.send({
-          "error":err,
-        })
+          message: "Email id does not exist",
+          data: null,
+        });
+      } else {
+        const isValidPassword = encryptDecrypt.decryptPassword(
+          req.body.password,
+          data.password
+        );
+        if (isValidPassword) {
+          const payload = {
+            _id: response._id,
+          };
+          JWTService.generateToken(payload).then((token) => {
+            if (token === null)
+              res.send({
+                message: "Tokenisation failed, please try again",
+                data: null,
+              });
+            else {
+              tokenModel
+                .deleteOne({ userId: data._id })
+                .then(() => {
+                  const tokenDetail = new tokenModel({
+                    token: token,
+                    userId: data._id,
+                  });
+                  tokenDetail
+                    .save()
+                    .then((response) => {
+                      res.send({
+                        message: "User logged in successfully",
+                        data: response,
+                      });
+                    })
+                    .catch((err) => console.log(err));
+                })
+                .catch((err) => console.log(err));
+            }
+          }).catch((err)=>console.log(err));
+        } else res.send({ message: "password is incorrect", data: null });
       }
-      else{
-          if(data===null){
-            res.send({
-               "message":"Email id does not exist",
-               "data":null   
-            })
-          }
-          else{
-              res.send({"data":data});
-          }
-      } 
-    })
-}
+    }
+  });
+};
 
 const signUp = async (req, res) => {
   const { fullName, email, password } = req.body;
