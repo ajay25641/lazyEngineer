@@ -58,7 +58,7 @@ async function signIn(req, res, next) {
   }
   */
  
- const signUp = (req,res)=>{
+ const signUp = async (req,res)=>{
   const {fullName,email,password}=req.body;
   const userDetail = new userModel({
         fullName:fullName,
@@ -66,7 +66,8 @@ async function signIn(req, res, next) {
         password:password,
  });
   userDetail.save().then((response)=>{
-    console.log(response);
+    const token= JWTService.generateToken(response._id);
+    console.log(token);
 }).catch(err=>{
    res.status(500).json(err);
 })
