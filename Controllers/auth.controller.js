@@ -38,7 +38,7 @@ async function signIn(req, res, next) {
   }
 }
 */
-exports.signIn = (req,res)=>{
+const signIn = (req,res)=>{
     userModel.findOne({email:req.body.email},(err,data)=>{
       console.log(err);
     })
@@ -90,7 +90,7 @@ async function signOut(req, res, next) {
 }
 
 module.exports = {
-  
+  signIn,
   signOut,
   signUp,
 };
