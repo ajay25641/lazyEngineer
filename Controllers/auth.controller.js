@@ -34,7 +34,7 @@ async function signIn(req, res, next) {
       });
   
     } else {
-      res.json({ message: "password is not valid" });
+      res.json({ message: "password is invalid" });
     }
   }
   
