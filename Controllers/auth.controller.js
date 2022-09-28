@@ -104,11 +104,11 @@ const signUp = async (req, res) => {
 };
 
 const signOut = (req,res)=>{
-  const token=req.body.token;
+  const {token} = req.body;
   console.log(req.body);
 
   if(token){
-     res.send({message:"please enter token"});
+     res.send({message:"please provide token"});
      return;
   }
   tokenModel.deleteOne({token:token}).then((response)=>{
