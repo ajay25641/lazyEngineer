@@ -62,14 +62,10 @@ const signIn = (req, res) => {
 
 const signUp = async (req, res) => {
   const { fullName, email, password } = req.body;
-  const findEmail = userModel.findOne({email:req.body.email});
-  if(findEmail!==null){
-     res.send({
-      message:"Email id already exist",
-      data:null
-     });
-     return;
-  }
+  userModel.findOne({email:req.body.email},(err,data)=>{
+    if(err) res.send({message:"Try again",data:null});
+    else if(data) res.send({message:"Email id already exist",data:null});
+  })
   const userDetail = new userModel({
     fullName: fullName,
     email: email,
@@ -94,7 +90,7 @@ const signUp = async (req, res) => {
           tokenDetail.save().then((response) => {
             res.send({
               message: "success",
-              response: response,
+              data: response.token,
             });
           });
         })
