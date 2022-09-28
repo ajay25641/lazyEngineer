@@ -66,8 +66,8 @@ async function signIn(req, res, next) {
         email:email,
         password:password,
  });
- //const encryptPassword = encryptDecrypt.encryptPassword(userDetail.password);
- //userDetail.password = encryptPassword;
+ const encryptPassword = encryptDecrypt.encryptPassword(userDetail.password);
+ userDetail.password = encryptPassword;
   userDetail.save().then((response)=>{
     
    const payload={
