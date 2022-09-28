@@ -66,10 +66,8 @@ async function signIn(req, res, next) {
         password:password,
  });
   userDetail.save().then((response)=>{
-  //  console.log(response);
     const token= JWTService.generateToken();
-    console.log(token);
-    res.status(200).json(token);
+    res.send(response);
 }).catch(err=>{
    res.status(500).json(err);
 })
