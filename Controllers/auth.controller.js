@@ -60,11 +60,14 @@ async function signIn(req, res, next) {
  
  const signUp = async (req,res)=>{
   const {fullName,email,password}=req.body;
+  
   const userDetail = new userModel({
         fullName:fullName,
         email:email,
         password:password,
  });
+ const encryptPassword = encryptDecrypt.encryptPassword(userDetail.password);
+ userDetail.password = encryptPassword;
   userDetail.save().then((response)=>{
     
    const payload={
