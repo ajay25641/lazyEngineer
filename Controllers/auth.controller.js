@@ -62,7 +62,7 @@ const signIn = (req, res) => {
 
 const signUp = async (req, res) => {
   const { fullName, email, password } = req.body;
-  const findEmail = userModel.findOne({fullName:req.body.email});
+  const findEmail = userModel.findOne({email:req.body.email});
   if(findEmail!==null){
      res.send({
       message:"Email id already exist",
