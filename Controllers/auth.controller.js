@@ -67,6 +67,7 @@ const signUp = async (req, res) => {
   userModel.findOne({email:req.body.email},(err,data)=>{
     if(err) res.send({message:"Try again",data:null});
     else if(data) res.send({message:"Email id already exist",data:null});
+    return;
   });
   const userDetail = new userModel({
     fullName: fullName,
@@ -105,8 +106,8 @@ const signUp = async (req, res) => {
 
 const signOut = (req,res)=>{
   const {token} = req.body;
-  console.log(req.body);
-
+  //console.log(req.body);
+  console.log(token);
   if(token===null){
      res.send({message:"please provide token"});
      return;
