@@ -69,10 +69,11 @@ async function signIn(req, res, next) {
   //  console.log(response);
     const token= JWTService.generateToken();
     console.log(token);
+    res.status(200).json(response);
 }).catch(err=>{
    res.status(500).json(err);
 })
-  res.status(200).json(response);
+  
  }
 
 
