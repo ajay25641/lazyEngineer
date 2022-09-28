@@ -108,7 +108,7 @@ const signOut = (req,res)=>{
   const {token} = req.body;
   //console.log(req.body);
   console.log(token);
-  if(token===null){
+  if(token===null||token===undefined){
      res.send({message:"please provide token"});
      return;
   }
