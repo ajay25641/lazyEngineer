@@ -25,7 +25,7 @@ exports.generateToken= async (payload) => {
    // jwt.sign(payload,SECRET_KEY,{expiresIn:"365 days"}).then((token)=>{
    //     return token;
    // }).catch((err)=>console.log(err));
-   const token = await jwt.sign(SECRET_KEY,{expiresIn:"365 days"});
+   const token = await jwt.sign(payload,SECRET_KEY,{expiresIn:"365 days"});
    return token;
     
 };
