@@ -23,6 +23,7 @@ module.exports = {
 exports.generateToken= async ()=>{
   //  console.log(payload);
     const token = await jwt.sign({_id:"6333d8814a84e1d85e8b5470"},SECRET_KEY,{expiresIn:"365 days"});
+    //console.log(token);
     return token;
 };
 
