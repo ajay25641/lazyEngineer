@@ -6,7 +6,7 @@ const { response } = require("../main.route");
 const { JsonWebTokenError } = require("jsonwebtoken");
 
 
-const signIn = (req, res) => {
+exports.signIn = (req, res) => {
   userModel.findOne({ email: req.body.email }, (err, data) => {
     console.log(err);
     if (err) {
@@ -62,7 +62,7 @@ const signIn = (req, res) => {
   });
 };
 
-const signUp = async (req, res) => {
+exports.signUp = async (req, res) => {
   const { fullName, email, password } = req.body;
   userModel.findOne({email:req.body.email},(err,data)=>{
     if(err) res.send({message:"Try again",data:null});
@@ -104,7 +104,7 @@ const signUp = async (req, res) => {
     });
 };
 
-const signOut = (req,res)=>{
+exports.signOut = (req,res)=>{
   const {token} = req.body;
   //console.log(req.body);
   console.log(token);
@@ -119,19 +119,11 @@ const signOut = (req,res)=>{
   }).catch((err)=>console.log(err));
 }
 
-/*
-async function signOut(req, res, next) {
-  //remove token from DB
-  const token = req.body.token;
-  await tokenModel.deleteOne({ token });
-  res
-    .status(200)
-    .json({ status: "Success", message: "Token deleted successfully" });
-}
-*/
 
-module.exports = {
-  signIn,
-  signOut,
-  signUp,
-};
+
+
+//module.exports = {
+//  signIn,
+//  signOut,
+//  signUp,
+//};
