@@ -41,9 +41,22 @@ async function signIn(req, res, next) {
 const signIn = (req,res)=>{
     userModel.findOne({email:req.body.email},(err,data)=>{
       console.log(err);
-      res.send({
-        "message":err,
-      })
+      if(err){
+        res.send({
+          "error":err,
+        })
+      }
+      else{
+          if(data===null){
+            res.send({
+               "message":"Email id does not exist",
+               "data":null   
+            })
+          }
+          else{
+              res.send({"data":data});
+          }
+      } 
     })
 }
 
