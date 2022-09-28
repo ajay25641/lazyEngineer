@@ -3,6 +3,7 @@ const JWTService = require("../CommonLib/JWTtoken");
 const encryptDecrypt = require("../CommonLib/encryption-decryption");
 const tokenModel = require("../Models/token");
 const { response } = require("../main.route");
+const { JsonWebTokenError } = require("jsonwebtoken");
 
 
 const signIn = (req, res) => {
@@ -104,13 +105,15 @@ const signUp = async (req, res) => {
 
 const signOut = (req,res)=>{
   const token=req.body.token;
-  if(token===null){
+  console.log(req.body);
+
+  if(token){
      res.send({message:"please enter token"});
      return;
   }
   tokenModel.deleteOne({token:token}).then((response)=>{
-    console.log(response);
-    if(response===null) res.send({message:"please register or signIn first"});
+    //console.log(response);
+    if(response.deletedCount==0) res.send({message:"please register or signIn first"});
     else res.send({message:"User logged out successfully"});
   }).catch((err)=>console.log(err));
 }
