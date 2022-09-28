@@ -96,15 +96,15 @@ exports.signUp = async (req, res) => {
   userDetail.password = encryptPassword;
   userDetail
     .save()
-    .then((response) => {
+    .then((data) => {
       const payload = {
-        _id: response._id,
+        _id: data._id,
       };
       JWTService.generateToken(payload)
         .then((token) => {
           const tokenDetail = new tokenModel({
             token: token,
-            userId: response._id,
+            userId: data._id,
           });
           console.log("Hi");
 
@@ -114,9 +114,9 @@ exports.signUp = async (req, res) => {
               status: "200",
               message: "user registered successfully",
               data: {
-                fullName: userDetail.fullName,
-                email: userDetail.email,
-                univercity: userDetail.univercity,
+                fullName: data.fullName,
+                email: data.email,
+                univercity: data.univercity,
                 token: response.token,
               },
             });
