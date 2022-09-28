@@ -66,7 +66,7 @@ exports.signUp = async (req, res) => {
   const { fullName, email, password } = req.body;
   userModel.findOne({email:req.body.email},(err,data)=>{
     if(err) res.send({message:"Try again",data:null});
-    else if(data) res.send({message:"Email id already exist",data:null});
+    else if(data) res.send({message:"Email id already exist",data:data});
     return;
   });
   const userDetail = new userModel({
@@ -122,8 +122,4 @@ exports.signOut = (req,res)=>{
 
 
 
-//module.exports = {
-//  signIn,
-//  signOut,
-//  signUp,
-//};
+
