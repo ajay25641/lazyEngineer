@@ -7,7 +7,7 @@ dotenv.config();
 const PORT = process.env.PORT || 3000;
 const host = "0.0.0.0";
 
-const dbUrl=process.env.MONGO_URL;
+//const dbUrl=process.env.MONGO_URL;
 //const dbUrl="mongodb+srv://developer_ajk:ajay%4012345@cluster0.c65dz.mongodb.net/lazyEngineer?retryWrites=true&w=majority";
 mongoose
   .connect(dbUrl, { useNewUrlParser: true })
