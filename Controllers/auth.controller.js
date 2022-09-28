@@ -51,9 +51,9 @@ exports.signIn = (req, res) => {
                           status: "200",
                           message: "User logged in successfully",
                           data: {
-                            fullName: response.fullName,
-                            email: response.email,
-                            univercity: response.univercity,
+                            fullName: data.fullName,
+                            email: data.email,
+                            univercity: data.univercity,
                             token: response.token,
                           },
                         });
@@ -109,14 +109,14 @@ exports.signUp = async (req, res) => {
           console.log("Hi");
 
           tokenDetail.save().then((response) => {
-            console.log(response);
+            //console.log(response);
             res.send({
               status: "200",
               message: "user registered successfully",
               data: {
-                fullName: response.fullName,
-                email: response.email,
-                univercity: response.univercity,
+                fullName: userDetail.fullName,
+                email: userDetail.email,
+                univercity: userDetail.univercity,
                 token: response.token,
               },
             });
